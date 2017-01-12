@@ -1,6 +1,8 @@
-import "archive.pp"
+import "archive"
 import "database.pp"
 import "golang.pp"
+
+Exec { path => [ "/bin/", "/sbin/" , "/usr/bin/", "/usr/sbin/" ] }
 
 class core {
       exec { "apt-update":
@@ -68,3 +70,4 @@ include python
 include web
 include flask
 include database
+include supervisord
