@@ -63,7 +63,7 @@ Vagrant.configure(2) do |config|
     puppet.manifests_path = "puppet/manifests"
     puppet.manifest_file = "init.pp"
     puppet.module_path = "puppet/modules"
-    puppet.options = "--verbose --debug"
+    puppet.options = "--verbose"
   end
 
   # Define a Vagrant Push strategy for pushing to Atlas. Other push strategies
