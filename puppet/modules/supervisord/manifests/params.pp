@@ -3,7 +3,7 @@
 # Default parameters for supervisord
 #
 
-class suppervisord::params {
+class supervisord::params {
       # init params for different OS families
       case $::osfamily {
            'Debian': {
@@ -30,6 +30,7 @@ class suppervisord::params {
                     $executable_path    = '/usr/local/bin'
            }
       }
+
 
       $init_script_template = "supervisord/init/${::osfamily}/${init_type}.erb"
       $init_default_template  = "supervisord/init/${::osfamily}/defaults.erb"

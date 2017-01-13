@@ -2,12 +2,11 @@
 #
 # This class installs supervisord via pip
 #
-
 class supervisord(
-      $package_ensure           = $supervisord::params::package_ensure,
-      $package_name             = $supervisord::params::package_name,
-      $package_provider         = $supervisord::params::package_provider,
-      $package_install_options  = $supervisord::params::package_install_options,
+      $package_ensure             = $supervisord::params::package_ensure,
+      $package_name               = $supervisord::params::package_name,
+      $package_provider           = $supervisord::params::package_provider,
+      $package_install_options    = $supervisord::params::package_install_options,
       $service_manage             = $supervisord::params::service_manage,
       $service_ensure             = $supervisord::params::service_ensure,
       $service_enable             = $supervisord::params::service_enable,
@@ -22,8 +21,8 @@ class supervisord(
       $executable                 = $supervisord::params::executable,
       $executable_ctl             = $supervisord::params::executable_ctl,
 
-      $log_path                   = $supervisord::params::log_path
-      $log_file                   = $supervisord::params::log_file
+      $log_path                   = $supervisord::params::log_path,
+      $log_file                   = $supervisord::params::log_file,
       $log_level                  = $supervisord::params::log_level,
       $logfile_maxbytes           = $supervisord::params::logfile_maxbytes,
       $logfile_backups            = $supervisord::params::logfile_backups,
@@ -68,7 +67,6 @@ class supervisord(
 
       $groups                     = {},
       $programs                   = {}
-
 ) inherits supervisord::params {
 
   if $unix_socket and $inet_server {
@@ -88,7 +86,7 @@ class supervisord(
      $ctl_password   = $supervisord::unix_password
   }
   elsif $use_ctl_socket == 'inet' {
-        $ctl_serverurl  = "http://${supervisord::inet_server_host]/${supervisord::inet_server_port}"
+        $ctl_serverurl  = "http://${supervisord::inet_server_host}/${supervisord::inet_server_port}"
         $ctl_auth       = $supervisord::inet_auth
         $ctl_username   = $supervisord::inet_username
         $ctl_password   = $supervisord::inet_password
@@ -101,16 +99,13 @@ class supervisord(
        $config_include_string   = "${config_include}/*.conf"
   }
 
-  create_resource('supervisord::group', $groups)
-  create_resource('supervisord::program', $programs)
+  create_resources('supervisord::group', $groups)
+  create_resources('supervisord::program', $programs)
 
-  #if $install_pip {
-  #   include supervisord::pip
-  #   Class['supervisord::pip'] -> Class['supervisord::install']
-  #}
-
-  include supervisord::install supervisord::config supervisord::service supervisord::reload
-
+  include supervisord::install
+  include supervisord::config
+  #supervisord::service supervisord::reload
+  /*
   anchor { 'supervisord::begin': }
   anchor { 'supervisord::end': }
 
@@ -126,5 +121,5 @@ class supervisord(
   Class['supervisord::service'] -> Supervisord::Group   <| |>
   #Class['supervisord::service'] -> Supervisord::Rpcinterface <| |>
   Class['supervisord::service'] -> Supervisord::Supervisorctl <| |>
-
+  */
 }

@@ -28,12 +28,14 @@ class supervisord::config inherits supervisord {
          }
       }
 
+      debug("template path: $supervisord::init_script_template")
+
       if $supervisord::install_init {
          file { $supervisord::init_script:
               ensure    => present,
               owner     => 'root',
               mode      => '0755',
-              content   => tempalte($supervisord::init_script_tempalate),
+              content   => template($supervisord::init_script_template),
               notify    => Class['supervisord::service'],
          }
 
@@ -82,7 +84,7 @@ class supervisord::config inherits supervisord {
 
          concat::fragment { 'supervisord_main':
                           target    => $supervisord::config_file,
-                          content   => template('supervisord/supervisord_main.erb')
+                          content   => template('supervisord/supervisord_main.erb'),
                           order     => 03
          }
       }
