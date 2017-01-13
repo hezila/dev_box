@@ -7,26 +7,27 @@
 #   names           => 'tornado_app_10001,tornado_app_10002,tornado_app_10003',
 # }
 #
-# === Authors
-#
-# Jawaad Mahmood <ideas@jawaadmahmood.com>
-#
-# === Copyright
-#
-# Copyright 2014 Jawaad Mahmood
-#
+# Document on parameters available at:
+# http://supervisord.org/configuration.html#group-x-section-settings
 
 define supervisord::group (
-  $group_name,
-  $names,
-  $priority="999"
+  $programs,
+  $ensure   = present,
+  $priority = undef,
+  $config_file_mode = '0644'
 ) {
-  file { "/etc/supervisor/conf.d/${group_name}.conf":
-    ensure  => 'present',
-    content => template('supervisord/group.conf.erb'),
+
+  include supervisord
+
+  $progstring = array2csv($programs)
+  $conf       = "${supervisord::config_include}/group_${name}.conf"
+
+  file { $conf:
+    ensure  => $ensure,
+    content => template('supervisord/conf/group.erb',
     owner   => 'root',
     group   => 'root',
-    mode    => '0644',
-    require => Class['supervisord']
+    mode    => $config_file_mode,
+    notify  => Class['supervisord::reload']
   }
 }
