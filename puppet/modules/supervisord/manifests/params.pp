@@ -47,9 +47,6 @@ class suppervisord::params {
       $executable               = '${executable_path}/supervisord'
       $executable_ctl           = '${executable_path}/supervisorctl'
 
-      $scl_enabled              = false
-      $scl_script               = '/opt/rh/python27/enable'
-
       $run_path                 = '/var/run'
       $pid_file                 = '/supervisord.pid'
       $log_pah                  = '/var/log/supervisor'
