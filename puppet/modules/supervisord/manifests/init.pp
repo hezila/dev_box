@@ -1,4 +1,10 @@
-class supervisord {
+# Class: supervisord
+#
+# This class installs supervisord via pip
+#
+
+class supervisord(
+) inherits supervisord::params {
   package { 'supervisor':
     ensure => present
   }
