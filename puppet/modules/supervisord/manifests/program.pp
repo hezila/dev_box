@@ -14,7 +14,7 @@
 
 define supervisord::program (
   $command,
-  $ensure,                  = present,
+  $ensure                   = present,
   $ensure_process           = 'running',
   $process_name             = "program_${name}",
   $numprocs                 = undef,

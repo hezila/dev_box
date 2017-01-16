@@ -24,7 +24,7 @@ define supervisord::supervisorctl(
        $unless_cmd = undef
   }
 
-  exec { "supervisorctl_command_${name}"
+  exec { "supervisorctl_command_${name}":
        command => $cmd,
        refreshonly  => $refreshonly,
        unless       => $unless_cmd

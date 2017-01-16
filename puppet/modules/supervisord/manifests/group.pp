@@ -24,7 +24,7 @@ define supervisord::group (
 
   file { $conf:
     ensure  => $ensure,
-    content => template('supervisord/conf/group.erb',
+    content => template('supervisord/conf/group.erb'),
     owner   => 'root',
     group   => 'root',
     mode    => $config_file_mode,
