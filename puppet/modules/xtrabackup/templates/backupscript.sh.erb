@@ -1,0 +1,38 @@
+#!/bin/bash -e
+#
+# This file is managed by Puppet.  Edit the template, not the file on disk.
+# (C) 2013 Bashton Ltd
+
+set -o pipefail
+
+DATE=$( date +%Y%m%d )
+
+if [ $# -eq 2 ]; then
+  if [ -e $1 ]; then
+    mycnf_defaults=$1
+  else
+    echo "USAGE: $0 path/to/defaults.cnf database_name"
+    exit
+  fi
+  database_name=$2
+else
+  echo "USAGE: $0 path/to/defaults.cnf database_name"
+  exit
+fi
+
+OPTS="--defaults-extra-file=${mycnf_defaults}"
+
+<% if scope.lookupvar('::lsbdistid') == 'CentOS' -%>
+  OPTS="$OPTS --no-version-check"
+<% end -%>
+
+OPTS="$OPTS --stream=xbstream --parallel=<%= scope.lookupvar('::xtrabackup::parallel') %>"
+
+OPTS="$OPTS <%= scope.lookupvar('::xtrabackup::workdir') %>"
+<% if scope.lookupvar('::xtrabackup::slaveinfo') -%>
+  OPTS="$OPTS --slave-info"
+<% end -%>
+OUTFILE="<%= scope.lookupvar('::xtrabackup::outputdir') %>/${database_name}/xtrabackup/${DATE}.${database_name}.xbstream.gz"
+/usr/bin/innobackupex $OPTS | nice pigz -p <%= scope.lookupvar('::xtrabackup::p_threads') -%> > $OUTFILE
+touch $OUTFILE.success
+

@@ -70,4 +70,9 @@ include python
 include web
 include flask
 include database
-include supervisord
+include ::supervisord
+#include xtrabackup
+class { "xtrabackup":
+      workdir   => "/tmp",
+      outputdir => "/home/vagrant/mysqlbakcups",
+}
