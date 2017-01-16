@@ -36,7 +36,7 @@ class supervisord(
       $config_include             = $supervisord::params::config_include,
       $config_include_purge       = false,
       $config_file                = $supervisord::params::config_file,
-      $config_file_mode           = $supervisrod::params::config_file_mode,
+      $config_file_mode           = $supervisord::params::config_file_mode,
       $config_dirs                = undef,
       $umask                      = $supervisord::params::umask,
 
@@ -104,10 +104,12 @@ class supervisord(
 
   include supervisord::install
   include supervisord::config
-  #supervisord::service supervisord::reload
-  /*
+  include supervisord::service
+  include supervisord::reload
+
   anchor { 'supervisord::begin': }
   anchor { 'supervisord::end': }
+
 
   Anchor['supervisord::begin']
   -> Class['supervisord::install']
@@ -115,6 +117,7 @@ class supervisord(
   -> Class['supervisord::service']
   -> Anchor['supervisord::end']
 
+  /*
   Class['supervisord::service'] -> Supervisord::Program <| |>
   #Class['supervisord::service'] -> Supervisord::Fcgi_program <| |>
   #Class['supervisord::service'] -> Supervisord::Eventlistener <| |>

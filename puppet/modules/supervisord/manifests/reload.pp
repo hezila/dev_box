@@ -7,7 +7,7 @@ class supervisord::reload inherits supervisord {
          $supervisorctl = $::supervisord::exectuable_ctl
 
          exec { 'supervisorctl_reload':
-              command   => "${supervisorctl} reload"
+              command   => "${supervisorctl} reload",
               refreshonly  => true,
               require      => Service[$::supervisord::service_name],
          }

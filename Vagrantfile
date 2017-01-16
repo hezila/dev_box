@@ -59,6 +59,11 @@ Vagrant.configure(2) do |config|
     vb.customize ["modifyvm", :id, "--memory", "1024"]
   end
 
+  config.vm.provision :shell, :inline => "mkdir -p /etc/puppet/modules && ( (puppet module list | grep puppetlabs-stdlib) || puppet module install puppetlabs-stdlib)"
+  config.vm.provision :shell, :inline => "mkdir -p /etc/puppet/modules && ( (puppet module list | grep puppetlabs-concat) || puppet module install puppetlabs-concat)"
+
+
+
   config.vm.provision :puppet do |puppet|
     puppet.manifests_path = "puppet/manifests"
     puppet.manifest_file = "init.pp"

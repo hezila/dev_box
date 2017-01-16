@@ -33,7 +33,7 @@ class supervisord::params {
 
 
       $init_script_template = "supervisord/init/${::osfamily}/${init_type}.erb"
-      $init_default_template  = "supervisord/init/${::osfamily}/defaults.erb"
+      $init_defaults_template  = "supervisord/init/${::osfamily}/defaults.erb"
 
       # default supervisord params
       $package_ensure           = 'installed'
@@ -45,12 +45,12 @@ class supervisord::params {
       $service_name             = 'supervisord'
       $service_restart          = undef
       $package_name             = 'supervisor'
-      $executable               = '${executable_path}/supervisord'
-      $executable_ctl           = '${executable_path}/supervisorctl'
+      $executable               = "${executable_path}/supervisord"
+      $executable_ctl           = "${executable_path}/supervisorctl"
 
       $run_path                 = '/var/run'
       $pid_file                 = '/supervisord.pid'
-      $log_pah                  = '/var/log/supervisor'
+      $log_path                  = '/var/log/supervisor'
       $log_file                 = 'supervisor.log'
       $logfile_maxbytes         = '50MB'
       $logfile_backups          = '10'
@@ -67,7 +67,7 @@ class supervisord::params {
 
       $unix_socket              = true
       $unix_socket_file         = 'supervisor.sock'
-      $unix_socket_name         = '0700'
+      $unix_socket_mode         = '0700'
       $unix_socket_owner        = 'nobody'
       $unix_auth                = false
       $unix_username            = undef

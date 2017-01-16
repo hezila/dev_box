@@ -28,8 +28,6 @@ class supervisord::config inherits supervisord {
          }
       }
 
-      debug("template path: $supervisord::init_script_template")
-
       if $supervisord::install_init {
          file { $supervisord::init_script:
               ensure    => present,
