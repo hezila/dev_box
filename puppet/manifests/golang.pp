@@ -42,7 +42,7 @@ class golang(
    }
 
    exec { "gopath-profile":
-        command => "echo 'export PATH=\$PATH:${installdir}/go/bin' >> ${profiledir}/.profile",
+        command => "echo 'export PATH=\$PATH:${installdir}/go/bin:${gopath}/bin' >> ${profiledir}/.profile",
         path => [ '/usr/bin', '/bin' ],
         unless => "grep '${installdir}/go/bin' ${profiledir}/.profile"
    }
